@@ -1,0 +1,7 @@
+.idea/
+.vscode
+.history/
+.DS_Store
+node_modules/
+dist/
+public/

@@ -1,0 +1,25 @@
+{
+  "name": "swagger-strip",
+  "version": "1.0.0",
+  "main": "index.js",
+  "description": "your package's description",
+  "author": "cyseria",
+  "scripts": {
+    "test": "jest",
+    "prepublishOnly": "npm test"
+  },
+  "keywords": [
+    "swagger-strip"
+  ],
+  "license": "MIT",
+  "repository": "cyseria/swagger-strip",
+  "jest": {
+    "testMatch": [
+      "**/__test{s,}__/*.(spec|test).{t,j}s{x,}"
+    ]
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.1",
+    "jest": "^23.5.0"
+  }
+}
