@@ -11,7 +11,6 @@ module.exports = {
  *                          *   - "all" - trailing commas wherever possible (function arguments)
  *                               */
     "trailingComma": "none",
-    "semi": false,
     /**
  *      * Do not print spaces between brackets.
  *           * If true, puts the > of a multi-line jsx element at the end of the last line instead of being
