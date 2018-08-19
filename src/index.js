@@ -19,26 +19,43 @@ module.exports = function swaggerStrip(sourceFile, path = '/pet', options) {
     const sourceCode = fs.readFileSync(sourceFile, { encoding: 'utf8' });
     const sourceObject = JSON.parse(sourceCode);
     // 解析接口
-    const interfaceData =  stripInterface(sourceObject.paths, path, options);
-    let refsObj = {};
-    let tagsObj = {};
-    if (!!interfaceData) {
+    const paths =  stripInterface(sourceObject.paths, path, options);
+    let refs = {};
+    let tags = [];
+    if (!!paths) {
         // 解析引用的内容 $refs
-        const refFlattenArrs = flattenRefs(interfaceData);
+        const refFlattenArrs = flattenRefs(paths);
         refFlattenArrs.forEach(item => {
-            const refs = getRefs(item, sourceObject);
-            refsObj = Object.assign(refsObj, refs);
+            const ref = getRefs(item, sourceObject);
+            refs = Object.assign(refs, ref);
         });
 
         // 解析 tags
+        if (utils.hasOwnProp(paths, 'tags')) {
+            tags = stripTags(paths.tags, sourceObject.tags);
+        }
     }
-
-    return {
-        refs: refsObj,
-        interfaceData: interfaceData,
-        tags: tagsObj
-    };
+    return {paths, refs, tags};
 };
+
+/**
+ * 抽离 tags
+ * @param {Array} tags - 接口 path 里面的 tags 字段
+ * @param {Object} sourceTags - 定义的 tags 列表
+ * @return {Array}
+ */
+function stripTags(tags, sourceTags) {
+    const returnTags = [];
+    tags.forEach(tag => {
+        const tagItem = sourceTags.find(item => {
+            return item.name === tag;
+        });
+        if (typeof tagItem !== 'undefined') {
+            returnTags.push(tagItem);
+        }
+    });
+    return returnTags;
+}
 
 /**
  * 根据 $ref 的 path 获取对应的 object
@@ -117,13 +134,10 @@ function flattenRefs(node) {
             schemaArr = schemaArr.concat(ref);
         }
     });
-    
+
     return utils.dedupeArr(schemaArr);
 }
 
-function stripTags() {
-
-}
 
 // TODO: multiple files
 function parseFiles(sourceFiles) {
