@@ -6,20 +6,22 @@
 const fs = require('fs');
 const utils = require('./utils');
 
-
 /**
  * 根据 path 抽离 swagger 字段
- * @param {string} sourceFile 文件所在的绝对路径
+ * @param {Object|string} source 文件所在的绝对路径
  * @param {string} path 需要获取的路径内容
  * @param {Object} options 额外配置
  * @return {{refs: Object, interfaceData: Object, tags: Object}}
  * feature: path 为 Array
  */
-module.exports = function swaggerStrip(sourceFile, path = '/pet', options) {
-    const sourceCode = fs.readFileSync(sourceFile, { encoding: 'utf8' });
-    const sourceObject = JSON.parse(sourceCode);
+module.exports = function swaggerStrip(source, path, options) {
+    let sourceObject = source;
+    if (!!options && !!options.isFile) {
+        sourceObject = parseFileToObject(source);
+    }
+
     // 解析接口
-    const paths =  stripInterface(sourceObject.paths, path, options);
+    const paths = stripInterface(sourceObject.paths, path, options);
     let refs = {};
     let tags = [];
     if (!!paths) {
@@ -35,7 +37,7 @@ module.exports = function swaggerStrip(sourceFile, path = '/pet', options) {
             tags = stripTags(paths.tags, sourceObject.tags);
         }
     }
-    return {paths, refs, tags};
+    return { paths, refs, tags };
 };
 
 /**
@@ -87,7 +89,7 @@ function getRefs(path, sourceObject) {
             otherRefs.forEach(item => {
                 refObjs = Object.assign(refObjs, getRefs(item, sourceObject));
             });
-        };
+        }
     }
     return refObjs;
 }
@@ -102,7 +104,7 @@ function getRefs(path, sourceObject) {
 function stripInterface(paths, path, options) {
     if (!paths[path]) {
         return '';
-    };
+    }
     let method = 'get';
     if (!!options && !!options.method) {
         method = options.method;
@@ -117,8 +119,7 @@ function stripInterface(paths, path, options) {
  */
 function flattenRefs(node) {
     let schemaArr = [];
-    const isObject = Object.prototype.toString.call(node) === '[object Object]'
-    && Object.keys(node).length > 0;
+    const isObject = Object.prototype.toString.call(node) === '[object Object]' && Object.keys(node).length > 0;
 
     if (isObject) {
         if (Object.keys(node).includes('$ref')) {
@@ -138,7 +139,14 @@ function flattenRefs(node) {
     return utils.dedupeArr(schemaArr);
 }
 
-
+function parseFileToObject(sourceFile) {
+    if (typeof sourceFile !== 'string') {
+        return;
+    }
+    const sourceCode = fs.readFileSync(sourceFile, { encoding: 'utf8' });
+    const sourceObject = JSON.parse(sourceCode);
+    return sourceObject;
+}
 // TODO: multiple files
 function parseFiles(sourceFiles) {
     const parsedFiles = [];
@@ -147,8 +155,7 @@ function parseFiles(sourceFiles) {
         const filename = sourceFiles[i];
         try {
             sourceCode = fs.readFileSync(filename, { encoding: 'utf8' });
-        }
-        catch (err) {
+        } catch (err) {
             console.error('Unable to read and parse the source file %s: %s', filename, err);
         }
         if (sourceCode.length) {
