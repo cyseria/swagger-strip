@@ -15,7 +15,7 @@ install
 npm install swagger-strip
 ```
 
-### default usage
+### Default Usage
 
 A demo, data from [swagger deafult demo](https://editor.swagger.io/)
 
@@ -47,7 +47,7 @@ swaggerStrip(sourceObject, '/pet/findByStatus');
 }
 ```
 
-### parse json file
+### Parse JSON File
 
 ```javascript
 const fs = require('fs');
@@ -60,7 +60,7 @@ const sourceObject = JSON.parse(fs.readFileSync(sourceJsonFile, 'utf8'));
 const res = swaggerStrip(sourceObject, '/pet/findByStatus');
 ```
 
-### parse yml file
+### Parse YML File
 
 parse .yml with [js-yaml](https://github.com/nodeca/js-yaml) or what you like;
 
@@ -73,6 +73,7 @@ const stripResult = swaggerStrip(sourceObject, '/pet', {
 ```
 
 ## API
+
 ### swaggerStrip(sourceObject, path, [options])
 
 #### sourceObject
@@ -112,9 +113,13 @@ Default:
 ## Development
 
 ```bash
-npm run install
+npm install
 
+# just test
 npm run test
+
+# commit with commitizen
+npm run commit
 ```
 
 ## License
