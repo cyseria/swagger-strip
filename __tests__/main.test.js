@@ -20,6 +20,12 @@ const wishPetRefs = {
 const wishPetTags = [sourceObject['tags'][0]];
 
 describe('main test', () => {
+    it('should strip false by error sourceObject', () => {
+        const errObject = {a: 'aaa'};
+        const stripResult = swaggerStrip(errObject, '/pet/findByStatus');
+        expect(stripResult).toEqual({});
+    });
+
     it('should strip "/pet/findByStatus" api from source object', () => {
         const stripResult = swaggerStrip(sourceObject, '/pet/findByStatus');
         const wishPetFindByStatusPaths = sourceObject['paths']['/pet/findByStatus']['get'];

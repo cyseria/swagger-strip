@@ -3,7 +3,6 @@
  * @author cyseria
  */
 
-const fs = require('fs');
 const utils = require('./utils/utils');
 
 /**
@@ -16,6 +15,7 @@ const utils = require('./utils/utils');
 module.exports = function swaggerStrip(source, path, options) {
     if (!source || !source.paths) {
         console.log('invalid source');
+        return {};
     }
 
     // 解析接口
