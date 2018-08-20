@@ -76,14 +76,21 @@ const stripResult = swaggerStrip(sourceObject, '/pet', {
 ### swaggerStrip(sourceObject, path, [options])
 
 #### sourceObject
+
 swagger source data, maybe you should parse json/yml file to object first
+
 Type: `Object`
+
 Default: {}
 
 #### path
+
 some api you want to strip
+
 Type: `string`
+
 Default: ''
+
 Example: '/pet/findByStatus'
 
 #### options
@@ -92,12 +99,15 @@ Type: Object
 
 Params: 
 - method: api method
-    - when use swaggerStrip(obj, '/pets'), return paths will equal `obj['paths']['/pet/findByStatus']['get']`
-    - when use swaggerStrip(obj, '/pets', {method: 'post'}), return paths equal `obj['paths']['/pet/findByStatus']['post']`
+    - when use `swaggerStrip(obj, '/pets')`, return paths will equal `obj['paths']['/pet/findByStatus']['get']`
+    - when use `swaggerStrip(obj, '/pets', {method: 'post'})`, return paths equal `obj['paths']['/pet/findByStatus']['post']`
 
-Default: {
+Default:
+```
+{
     method: `'get'`
 }
+```
 
 ## Development
 
