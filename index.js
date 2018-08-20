@@ -12,7 +12,6 @@ const utils = require('./utils/utils');
  * @param {string} path 需要获取的路径内容
  * @param {Object} options 额外配置
  * @return {{refs: Object, interfaceData: Object, tags: Object}}
- * feature: path 为 Array
  */
 module.exports = function swaggerStrip(source, path, options) {
     if (!source || !source.paths) {

@@ -1,6 +1,6 @@
 {
     "name": "swagger-strip",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "main": "index.js",
     "description": "a small module to strip swagger from one api",
     "author": "cyseria",
