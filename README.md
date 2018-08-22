@@ -17,7 +17,7 @@ npm install swagger-strip
 
 ### Default Usage
 
-A demo, data from [swagger deafult demo](https://editor.swagger.io/)
+A demo, data from [swagger default demo](https://editor.swagger.io/)
 
 ```javascript
 const swaggerStrip = require('swagger-strip');
@@ -106,7 +106,7 @@ Params:
 Default:
 ```
 {
-    method: `'get'`
+    method: 'get'
 }
 ```
 
